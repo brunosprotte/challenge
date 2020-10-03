@@ -1,31 +1,29 @@
-import { uuid } from 'uuidv4';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import Customer from './Customer'
 
+@Entity('customers')
 class Favorite {
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
   productId: string;
 
+  @Column()
   title: string;
 
+  @Column()
   image: string;
 
+  @Column()
   price: number;
 
-  customerId: string;
+  @Column()
+  customer_id: string;
 
-  constructor({
-    productId,
-    title,
-    image,
-    price,
-    customerId,
-  }: Omit<Favorite, 'id'>) {
-    this.id = uuid();
-    this.productId = productId;
-    this.title = title;
-    this.image = image;
-    this.price = price;
-    this.customerId = customerId;
-  }
+  @ManyToOne(() => Customer)
+  @JoinColumn({ name: 'customer_id' })
+  customer: Customer;
+
 }
 export default Favorite;
