@@ -1,16 +1,16 @@
 import { sign } from 'jsonwebtoken';
 
-import Customer from '../model/Customer';
-import CustomerRepository from '../repositories/CustomerRepository';
+import CustomerRepository from '../customer/CustomerRepository';
 
+import AppError from '../errors/AppError';
 import authConfig from '../config/authConfig';
 
-interface Request {
+interface IRequest {
   email: string;
 }
 
-interface Response {
-  customer: Customer;
+interface IResponse {
+  customer: { name: string; email: string };
   token: string;
 }
 
@@ -21,11 +21,11 @@ class LoginService {
     this.customerRepository = customerRepository;
   }
 
-  public async execute({ email }: Request): Promise<Response> {
-    const customer = this.customerRepository.findByEmail(email);
+  public async execute({ email }: IRequest): Promise<IResponse> {
+    const customer = await this.customerRepository.findByEmail(email);
 
     if (!customer) {
-      throw Error('Customer not found!');
+      throw new AppError('Customer not found!', 401);
     }
 
     const { secret, expiresIn } = authConfig.jwt;
@@ -35,7 +35,9 @@ class LoginService {
       expiresIn,
     });
 
-    return { customer, token };
+    const { name } = customer;
+
+    return { customer: { name, email }, token };
   }
 }
 export default LoginService;
