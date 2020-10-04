@@ -1,30 +1,34 @@
-import Favorite from '../model/Favorite';
+import Favorite from '../../model/Favorite';
+
+import IFavoriteRepository from './IFavoriteRepository';
 
 import FavoriteRepository from './FavoriteRepository';
-import ProductService from '../services/ProductService';
+import ProductService from '../product/ProductService';
+import IProductService from '../product/IProductService';
 
-import AppError from '../errors/AppError';
+import AppError from '../../errors/AppError';
+
+import IPaginatedFavorites from './dto/IPaginatedFavorites';
+import IFindFavoriteDTO from './dto/IFindFavoriteDTO';
+
+import IPage from './dto/IPageDTO';
 
 interface IRequest {
-  customer_id: string;
   product_id: string;
-}
-
-interface IProductDTO {
-  id: string;
-  image: string;
-  price: number;
-  title: string;
-  reviewScore: number;
+  customer_id: string;
 }
 
 class FavoriteService {
-  private productService = new ProductService();
+  private productService: ProductService;
 
   private favoriteRepository: FavoriteRepository;
 
-  constructor(favoritesRepository: FavoriteRepository) {
+  constructor(
+    favoritesRepository: IFavoriteRepository,
+    productService: IProductService,
+  ) {
     this.favoriteRepository = favoritesRepository;
+    this.productService = productService;
   }
 
   public async create({
@@ -37,10 +41,13 @@ class FavoriteService {
       throw new AppError('Product not found!', 404);
     }
 
-    const { id } = product;
+    const { id, image, price, title, reviewScore } = product;
 
     const favoriteAlreadyExists = await this.favoriteRepository.findByCustomerIdAndProductId(
-      { customer_id, product_id },
+      {
+        customer_id,
+        product_id,
+      },
     );
 
     if (favoriteAlreadyExists) {
@@ -53,35 +60,31 @@ class FavoriteService {
     const favorite = await this.favoriteRepository.create({
       product_id: id,
       customer_id,
+      image,
+      price,
+      title,
+      review_score: reviewScore,
     });
 
     return favorite;
   }
 
-  public async get(customer_id: string): Promise<IProductDTO[] | undefined> {
+  public async get(
+    customer_id: string,
+    { page, size }: IPage,
+  ): Promise<IPaginatedFavorites | undefined> {
     const favorites = await this.favoriteRepository.getByCustomerId(
       customer_id,
+      { page, size },
     );
 
-    const products = [];
-
-    for (let i = 0; i < favorites?.length; i++) {
-      const data = await this.productService.getByProductId(
-        favorites[i].product_id,
-      );
-      if (!data) {
-        throw new AppError(
-          `Error reading data from product ${favorites[i].product_id}`,
-        );
-      }
-      const { id, image, price, title, reviewScore } = data;
-      products.push({ id, image, price, title, reviewScore });
-    }
-
-    return products;
+    return favorites;
   }
 
-  public async delete({ customer_id, product_id }: IRequest): Promise<void> {
+  public async delete({
+    customer_id,
+    product_id,
+  }: IFindFavoriteDTO): Promise<void> {
     const favorite = await this.favoriteRepository.findByCustomerIdAndProductId(
       {
         customer_id,

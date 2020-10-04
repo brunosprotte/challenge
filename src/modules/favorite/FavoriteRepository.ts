@@ -1,23 +1,30 @@
 import { getRepository } from 'typeorm';
-import AppError from '../errors/AppError';
 
-import Favorite from '../model/Favorite';
+import Favorite from '../../model/Favorite';
 
-interface IFavoriteDTO {
-  product_id: string;
-  customer_id: string;
-}
+import IFavoriteDTO from './dto/IFavoriteDTO';
+import IFindFavoriteDTO from './dto/IFindFavoriteDTO';
+import IPaginatedFavorites from './dto/IPaginatedFavorites';
+
+import IPage from './dto/IPageDTO';
 
 class FavoriteRepository {
   public async create({
     product_id,
     customer_id,
+    image,
+    price,
+    title,
+    review_score,
   }: IFavoriteDTO): Promise<Favorite> {
     const favoriteRepository = getRepository(Favorite);
-
     const favorite = favoriteRepository.create({
       product_id,
       customer_id,
+      image,
+      price,
+      title,
+      review_score,
     });
 
     await favoriteRepository.save(favorite);
@@ -28,9 +35,8 @@ class FavoriteRepository {
   public async findByCustomerIdAndProductId({
     customer_id,
     product_id,
-  }: IFavoriteDTO): Promise<Favorite | undefined> {
+  }: IFindFavoriteDTO): Promise<Favorite | undefined> {
     const favoriteRepository = getRepository(Favorite);
-
     const favorite = await favoriteRepository.findOne({
       where: { customer_id, product_id },
     });
@@ -39,15 +45,21 @@ class FavoriteRepository {
 
   public async getByCustomerId(
     customer_id: string,
-  ): Promise<Favorite[] | undefined> {
+    { page, size }: IPage,
+  ): Promise<IPaginatedFavorites | undefined> {
     const favoriteRepository = getRepository(Favorite);
-
-    const favorite = await favoriteRepository.find({
+    const [favorites, total] = await favoriteRepository.findAndCount({
       where: {
         customer_id,
       },
+      order: {
+        title: 'ASC',
+      },
+      take: size,
+      skip: (page - 1) * size,
     });
-    return favorite;
+
+    return { favorites, total };
   }
 
   public async remove(favorite: Favorite): Promise<void> {

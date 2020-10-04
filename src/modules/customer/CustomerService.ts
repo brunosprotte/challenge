@@ -1,12 +1,9 @@
-import Customer from '../model/Customer';
-import AppError from '../errors/AppError';
+import Customer from '../../model/Customer';
+import AppError from '../../errors/AppError';
 
+import ICustomerDTO from './ICustomerDTO';
+import ICustomerRepository from './ICustomerRepository';
 import CustomersRepository from './CustomerRepository';
-
-interface ICreateRequest {
-  name: string;
-  email: string;
-}
 
 interface IEditRequest {
   id: string;
@@ -17,11 +14,11 @@ interface IEditRequest {
 class CustomerService {
   private customersRepository: CustomersRepository;
 
-  constructor(customersRepository: CustomersRepository) {
+  constructor(customersRepository: ICustomerRepository) {
     this.customersRepository = customersRepository;
   }
 
-  public async create({ name, email }: ICreateRequest): Promise<Customer> {
+  public async create({ name, email }: ICustomerDTO): Promise<Customer> {
     const foundCustomer = await this.customersRepository.findByEmail(email);
 
     if (foundCustomer) {
@@ -56,11 +53,11 @@ class CustomerService {
 
     const foundEmail = await this.customersRepository.findByEmail(email);
 
-    if (foundEmail && foundCustomer.id !== id) {
+    if (foundEmail && foundEmail.id !== id) {
       throw new AppError('Email already in use!');
     }
 
-    const customer = this.customersRepository.put(foundCustomer, {
+    const customer = await this.customersRepository.put(foundCustomer, {
       name,
       email,
     });

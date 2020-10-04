@@ -2,8 +2,8 @@ import { sign } from 'jsonwebtoken';
 
 import CustomerRepository from '../customer/CustomerRepository';
 
-import AppError from '../errors/AppError';
-import authConfig from '../config/authConfig';
+import AppError from '../../errors/AppError';
+import authConfig from '../../config/authConfig';
 
 interface IRequest {
   email: string;

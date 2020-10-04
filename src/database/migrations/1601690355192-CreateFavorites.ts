@@ -28,6 +28,27 @@ export default class CreateFavorites1601690355192
             name: 'customer_id',
             type: 'uuid',
           },
+          {
+            name: 'title',
+            type: 'varchar',
+          },
+          {
+            name: 'image',
+            type: 'varchar',
+          },
+          {
+            name: 'price',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+          },
+          {
+            name: 'review_score',
+            type: 'decimal',
+            precision: 10,
+            scale: 2,
+            isNullable: true,
+          },
         ],
       }),
     );

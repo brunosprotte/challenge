@@ -21,5 +21,17 @@ class Favorite {
   @ManyToOne(() => Customer)
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
+
+  @Column()
+  image: string;
+
+  @Column()
+  price: number;
+
+  @Column()
+  title: string;
+
+  @Column()
+  review_score: number;
 }
 export default Favorite;

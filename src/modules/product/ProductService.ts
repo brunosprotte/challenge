@@ -1,12 +1,6 @@
 import axios from 'axios';
 
-interface IProductDTO {
-  id: string;
-  image: string;
-  price: number;
-  title: string;
-  reviewScore: number;
-}
+import IProductDTO from './IProductDTO';
 
 class ProductService {
   public async getByProductId(id: string): Promise<IProductDTO | void> {
