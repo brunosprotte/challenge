@@ -15,7 +15,7 @@ class CustomerController {
 
     const customer = await customerService.create({ name, email });
 
-    return response.json(customer);
+    return response.json(customer).status(201);
   }
 
   public async get(request: Request, response: Response): Promise<Response> {
@@ -41,13 +41,13 @@ class CustomerController {
 
     const customerService = new CustomerService(customersRespository);
 
-    const customer = await customerService.put({
+    await customerService.put({
       id: customer_id,
       name,
       email,
     });
 
-    return response.json(customer);
+    return response.json().status(204);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {

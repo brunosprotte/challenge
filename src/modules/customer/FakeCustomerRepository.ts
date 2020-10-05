@@ -31,7 +31,7 @@ class FakeCustomerRepository implements ICustomerRepository {
   public async put(
     foundCustomer: Customer,
     { name, email }: ICustomerDTO,
-  ): Promise<Customer> {
+  ): Promise<void> {
     Object.assign(foundCustomer, { name, email });
 
     const customers = this.customers.filter(
@@ -41,8 +41,6 @@ class FakeCustomerRepository implements ICustomerRepository {
     customers.push(foundCustomer);
 
     this.customers = customers;
-
-    return foundCustomer;
   }
 
   public async remove(customer: Customer): Promise<void> {

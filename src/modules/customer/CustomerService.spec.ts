@@ -70,10 +70,7 @@ describe('Edit Customer', () => {
       email: 'editedEmail@customer.com',
     };
 
-    const editedCustommer = await customerService.put(editedData);
-
-    expect(editedCustommer?.name).toEqual('Edited name');
-    expect(editedCustommer?.email).toEqual('editedEmail@customer.com');
+    await expect(customerService.put(editedData)).resolves.toBeUndefined();
   });
 
   it('should not be able to edit a customer with invalid id', async () => {

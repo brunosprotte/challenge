@@ -35,12 +35,10 @@ class CustomerRepository implements ICustomerRepository {
   public async put(
     foundCustomer: Customer,
     { name, email }: ICustomerDTO,
-  ): Promise<Customer> {
+  ): Promise<void> {
     const customerRepository = getRepository(Customer);
     customerRepository.merge(foundCustomer, { name, email });
-    const updated = await customerRepository.save(foundCustomer);
-
-    return updated;
+    await customerRepository.save(foundCustomer);
   }
 
   public async remove(customer: Customer): Promise<void> {

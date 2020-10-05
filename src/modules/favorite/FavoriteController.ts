@@ -20,7 +20,7 @@ class FavoriteController {
 
     const favorite = await favoriteService.create({ customer_id, product_id });
 
-    return response.json(favorite);
+    return response.json(favorite).status(201);
   }
 
   public async get(request: Request, response: Response): Promise<Response> {

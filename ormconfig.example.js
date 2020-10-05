@@ -4,8 +4,8 @@ const devConfig = {
   host: 'localhost',
   port: 5432,
   username: 'postgres',
-  password: 'docker',
-  database: 'luizalabs',
+  password: 'postgres',
+  database: 'postgres',
   entities: [
     './src/model/*.ts'
   ],
@@ -23,8 +23,8 @@ const prodConfig = {
   host: 'localhost',
   port: 5432,
   username: 'postgres',
-  password: 'docker',
-  database: 'luizalabs',
+  password: 'postgres',
+  database: 'postgres',
   entities: [
     './dist/model/*.js'
   ],

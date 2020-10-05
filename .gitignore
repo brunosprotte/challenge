@@ -28,5 +28,8 @@ typings/
 .env
 .env.test
 
+#typeorm
+.ormconfig.js
+
 #IDE
 .vscode/

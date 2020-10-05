@@ -40,11 +40,7 @@ class CustomerService {
     return foundCustomer;
   }
 
-  public async put({
-    id,
-    name,
-    email,
-  }: IEditRequest): Promise<Customer | undefined> {
+  public async put({ id, name, email }: IEditRequest): Promise<void> {
     const foundCustomer = await this.customersRepository.findById(id);
 
     if (!foundCustomer) {
@@ -57,12 +53,10 @@ class CustomerService {
       throw new AppError('Email already in use!');
     }
 
-    const customer = await this.customersRepository.put(foundCustomer, {
+    await this.customersRepository.put(foundCustomer, {
       name,
       email,
     });
-
-    return customer;
   }
 
   public async delete(id: string): Promise<void> {
