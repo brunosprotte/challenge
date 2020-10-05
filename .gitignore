@@ -29,7 +29,7 @@ typings/
 .env.test
 
 #typeorm
-.ormconfig.js
+ormconfig.js
 
 #IDE
 .vscode/
