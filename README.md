@@ -123,8 +123,7 @@ Response 200
 {
   "customer":{
     "name": "string",
-    "email": "string",
-    "id": "uuid"
+    "email": "string"
   },
   "token": "string"
 }

@@ -53,6 +53,11 @@ class CustomerController {
   public async delete(request: Request, response: Response): Promise<Response> {
     const customersRespository = new CustomersRespository();
     const { customer_id } = request.params;
+    const { id } = request.customer;
+
+    if (id !== customer_id) {
+      throw new AppError('You can edit your only account!', 401);
+    }
 
     const customerService = new CustomerService(customersRespository);
 
