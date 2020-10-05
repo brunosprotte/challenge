@@ -66,9 +66,9 @@ yarn dev:server
 Response 200
 
 {
-  "name": string,
-  "email": string,
-  "id": uuid
+  "name": "string",
+  "email": "string",
+  "id": "uuid"
 }
 
 ```
@@ -81,16 +81,16 @@ Response 200
 Response 200
 
 {
-  "name": string,
-  "email": string,
-  "id": uuid
+  "name": "string",
+  "email": "string",
+  "id": "uuid"
 }
 ```
 
 ## PUT
 
 ```json
-/customers/{customer_id}
+/customers/{"customer_id"}
 
 {
   "name": "Jhon One",
@@ -104,7 +104,7 @@ Response 204
 ## DELETE
 
 ```json
-/customers/{customer_id}
+/customers/{"customer_id"}
 
 Response 204
 ```
@@ -122,11 +122,11 @@ Response 200
 
 {
   "customer":{
-    "name": string,
-    "email": string,
-    "id": uuid
+    "name": "string",
+    "email": "string",
+    "id": "uuid"
   },
-  "token": string
+  "token": "string"
 }
 
 ```
@@ -134,18 +134,18 @@ Response 200
 ### POST
 
 ```json
-/favorites/{product_id}
+/favorites/{"product_id"}
 
 Response 201
 
 {
-  "product_id": uuid,
-  "customer_id": uuid,
-  "image": string,
-  "price": number,
-  "title": string,
-  "review_score": number,
-  "id": uuid
+  "product_id": "uuid",
+  "customer_id": "uuid",
+  "image": "string",
+  "price": "number",
+  "title": "string",
+  "review_score": "number",
+  "id": "uuid"
 }
 
 ```
@@ -160,16 +160,16 @@ Response 200
 {
   "favorites": [
     {
-      "product_id": uuid,
-      "customer_id": uuid,
-      "image": string,
-      "price": number,
-      "title": string,
-      "review_score": number,
-      "id": uuid
+      "product_id": "uuid",
+      "customer_id": "uuid",
+      "image": "string",
+      "price": "number",
+      "title": "string",
+      "review_score": "number",
+      "id": "uuid"
     }
   ],
-  "total": number
+  "total": "number"
 }
 
 ```
@@ -177,7 +177,7 @@ Response 200
 ### DELETE
 
 ```json
-/favorites/{product_id}
+/favorites/{"product_id"}
 
 Response 204
 ```
