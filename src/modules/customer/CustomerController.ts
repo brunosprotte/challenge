@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+import AppError from '../../errors/AppError';
+
 import CustomersRespository from './CustomerRepository';
 import CustomerService from './CustomerService';
 
@@ -31,6 +33,11 @@ class CustomerController {
     const customersRespository = new CustomersRespository();
     const { name, email } = request.body;
     const { customer_id } = request.params;
+    const { id } = request.customer;
+
+    if (id !== customer_id) {
+      throw new AppError('You can edit your only account!', 401);
+    }
 
     const customerService = new CustomerService(customersRespository);
 
